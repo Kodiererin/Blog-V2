@@ -8,6 +8,35 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+const mongoose = require('mongoose');
+main().catch(err => console.log(err));
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/db_blog');
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+}
+
+mongoose.set('strictQuery',true);
+
+const blogSchema = new mongoose.Schema({
+  blogTitle : {
+    type : String,
+    uppercase : true,
+  },
+  blogBody : {
+    type : String,
+  }
+});
+
+const blogModel = new mongoose.model('blogModel',blogSchema);
+
+// Creating a default data for testing 
+// const myTestBlog = new blogModel({
+//   blogTitle : "Hello World I am Ujjwal Kumar",
+//   blogBody : "I am Ujjwal Kumar, I am from India and I am doing Engineering",
+// });
+
+myTestBlog.save();
+
 
 // -----------------------------------------------------------------------------------------------------------------------------------
 
