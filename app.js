@@ -88,14 +88,14 @@ app.get("/",function(req,res)
   // console.log(req.body.postTitle);     Creating a JS Object instead of it
   // console.log(req.body.postBody);
 
-  const post = 
-  {
-    title: req.body.postTitle,
-    content : req.body.postBody
+  // const post = 
+  // {
+  //   title: req.body.postTitle,
+  //   content : req.body.postBody
     
-  };
+  // };
 
-  posts.push(post);
+  // posts.push(post);
   myBlog = new blogModel({
     blogTitle : req.body.postTitle,
     blogBody : req.body.postBody,
