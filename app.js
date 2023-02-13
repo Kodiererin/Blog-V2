@@ -45,9 +45,12 @@ const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pelle
 const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
 
 let posts = [];
-app.get("/",function(req,res)
+app.get("/",async function(req,res)
 {
-  res.render("home",{homeStartingContent:homeStartingContent,posts :posts});
+  const getBlog =await blogModel.find();
+  console.log(getBlog)
+
+  res.render("home",{homeStartingContent,getBlog});
  })
 
  app.get("/about",function(req,res)
@@ -65,21 +68,30 @@ app.get("/",function(req,res)
   res.render("compose");
  })
 
- app.get("/posts/:test", function(req,res)
+ app.get("/posts/:getId", async function(req,res)
  {
     // console.log(req.params.test);
     // console.log(posts);
-
-    posts.forEach(function(elements)
-    {
-      // console.log(_.lowerCase(elements.title));      // check krne ke Liye
-      // console.log(_.lowerCase(req.params.test));
-      let ctr=0;
-      if(_.lowerCase(elements.title) == _.lowerCase(req.params.test))
-      {
-        res.render("post",{title : elements.title , body : elements.content,title : elements.title});
+    const blogId = req.params.getId;
+    console.log(blogId);
+    const getBlogById = blogModel.findById(blogId , function(err,result){
+      if(!err && result){
+        console.log(result);
+        res.render('post',{title :  _.startCase(_.camelCase(result.blogTitle)) , body : _.capitalize(result.blogBody) })
       }
-    })
+    });
+
+
+    // posts.forEach(function(elements)
+    // {
+    //   // console.log(_.lowerCase(elements.title));      // check krne ke Liye
+    //   // console.log(_.lowerCase(req.params.test));
+    //   let ctr=0;
+    //   if(_.lowerCase(elements.title) == _.lowerCase(req.params.test))
+    //   {
+    //     res.render("post",{title : elements.title , body : elements.content,title : elements.title});
+    //   }
+    // })
 
  })
 
