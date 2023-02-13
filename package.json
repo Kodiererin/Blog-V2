@@ -1,7 +1,6 @@
 {
   "name": "ejs-challenge",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +11,18 @@
     "body-parser": "^1.20.1",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "lodash": "^4.17.21"
-  }
+    "lodash": "^4.17.21",
+    "mongoose": "^6.9.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whoisujjwal/Blog.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/whoisujjwal/Blog/issues"
+  },
+  "homepage": "https://github.com/whoisujjwal/Blog#readme",
+  "description": ""
 }
