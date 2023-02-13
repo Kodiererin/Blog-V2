@@ -35,7 +35,7 @@ const blogModel = new mongoose.model('blogModel',blogSchema);
 //   blogBody : "I am Ujjwal Kumar, I am from India and I am doing Engineering",
 // });
 
-myTestBlog.save();
+// myTestBlog.save();
 
 
 // -----------------------------------------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ app.get("/",function(req,res)
 
  })
 
- app.post("/compose",function(req,res)
+ app.post("/compose",async function(req,res)
  {
   // console.log(req.body.postTitle);     Creating a JS Object instead of it
   // console.log(req.body.postBody);
@@ -96,7 +96,16 @@ app.get("/",function(req,res)
   };
 
   posts.push(post);
-  // console.log(posts);
+  myBlog = new blogModel({
+    blogTitle : req.body.postTitle,
+    blogBody : req.body.postBody,
+  })
+  // Saving the Post
+  await myBlog.save(function(err,data){
+    if(!err && data){
+      console.log("Data Saved");
+    }
+  });
 
   res.redirect("/");
 
