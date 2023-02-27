@@ -6,6 +6,10 @@
    <h1><%= elements.blogTitle %></h1>
    <p> <%= elements.blogBody.substring(0,100)+"...." %> <a href="posts/<%= elements._id %>">Read More</a></p>
    <% }); %>
+   <div>
+    <img src="data:image/<%=elements.img.contentType%>;base64,
+         <%=image.img.data.toString('base64')%>">
+    <div>
 
 
    <script src="lodash.js"></script>

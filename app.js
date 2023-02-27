@@ -1,4 +1,24 @@
-//jshint esversion:6
+// https://www.geeksforgeeks.org/javascript-function-complete-reference/?ref=shm
+// Refer this Website and do the changes
+
+
+"use strict"
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Setting Up Multer for Storing Image
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+  destination : (req,file,cd) =>{
+    cb(null , 'uploads')
+  },
+  filename : (req,file,cb) =>{
+    cb(null,file.fieldname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage })
+const fs = require('fs');
+/////////////////////////////////////////////////////////////////////////////////////
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -10,24 +30,20 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 const mongoose = require('mongoose');
 main().catch(err => console.log(err));
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/db_blog');
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
 
+
+
+require('dotenv/config')
+
+async function main() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/db_blog");
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+    console.log("Database Saved");
+}
 mongoose.set('strictQuery',true);
 
-const blogSchema = new mongoose.Schema({
-  blogTitle : {
-    type : String,
-    uppercase : true,
-  },
-  blogBody : {
-    type : String,
-  }
-});
+const blogModel = require('./models/Database')
 
-const blogModel = new mongoose.model('blogModel',blogSchema);
 
 // Creating a default data for testing 
 // const myTestBlog = new blogModel({
@@ -95,8 +111,9 @@ app.get("/",async function(req,res)
 
  })
 
- app.post("/compose",async function(req,res)
+ app.post("/compose", upload.single('image') , async function(req,res)
  {
+  console.log(req.body);
   // console.log(req.body.postTitle);     Creating a JS Object instead of it
   // console.log(req.body.postBody);
 
@@ -111,6 +128,10 @@ app.get("/",async function(req,res)
   myBlog = new blogModel({
     blogTitle : req.body.postTitle,
     blogBody : req.body.postBody,
+    img: {
+      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      contentType: 'image/png'
+  }
   })
   // Saving the Post
   await myBlog.save(function(err,data){
