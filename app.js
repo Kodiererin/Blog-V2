@@ -4,21 +4,7 @@
 
 "use strict"
 
-//////////////////////////////////////////////////////////////////////////////////////
-// Setting Up Multer for Storing Image
-var multer = require('multer');
-
-var storage = multer.diskStorage({
-  destination : (req,file,cd) =>{
-    cb(null , 'uploads')
-  },
-  filename : (req,file,cb) =>{
-    cb(null,file.fieldname + '-' + Date.now())
-  }
-});
-var upload = multer({ storage: storage })
-const fs = require('fs');
-/////////////////////////////////////////////////////////////////////////////////////
+const path = require('path')
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -30,15 +16,36 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 const mongoose = require('mongoose');
 main().catch(err => console.log(err));
+// 
+var fileupload = require("express-fileupload");
+app.use(fileupload());
 
 
+//////////////////////////////////////////////////////////////////////////////////////
+// Setting Up Multer for Storing Image
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+  destination : (req,file,cb) =>{
+    cb(null , 'uploads')
+  },
+  filename : (req,file,cb) =>{
+    cb(null,file.fieldname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage })
+const fs = require('fs');
+
+// var fileupload = require("express-fileupload");
+// app.use(fileupload());
+/////////////////////////////////////////////////////////////////////////////////////
 
 require('dotenv/config')
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/db_blog");
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-    console.log("Database Saved");
+    console.log("Database Active");
 }
 mongoose.set('strictQuery',true);
 
@@ -86,15 +93,13 @@ app.get("/",async function(req,res)
 
  app.get("/posts/:getId", async function(req,res)
  {
-    // console.log(req.params.test);
-    // console.log(posts);
     const blogId = req.params.getId;
     console.log(blogId);
     const getBlogById = blogModel.findById(blogId , function(err,result){
-      if(!err && result){
-        console.log(result);
-        res.render('post',{title :  _.startCase(_.camelCase(result.blogTitle)) , body : _.capitalize(result.blogBody) })
-      }
+    if(!err && result){
+    console.log(result);
+    res.render('post',{title :  _.startCase(_.camelCase(result.blogTitle)) , body : _.capitalize(result.blogBody) })
+    }
     });
 
 
@@ -114,16 +119,6 @@ app.get("/",async function(req,res)
  app.post("/compose", upload.single('image') , async function(req,res)
  {
   console.log(req.body);
-  // console.log(req.body.postTitle);     Creating a JS Object instead of it
-  // console.log(req.body.postBody);
-
-  // const post = 
-  // {
-  //   title: req.body.postTitle,
-  //   content : req.body.postBody
-    
-  // };
-
   // posts.push(post);
   myBlog = new blogModel({
     blogTitle : req.body.postTitle,
@@ -133,16 +128,21 @@ app.get("/",async function(req,res)
       contentType: 'image/png'
   }
   })
-  // Saving the Post
-  await myBlog.save(function(err,data){
-    if(!err && data){
-      console.log("Data Saved");
-    }
-  });
 
-  res.redirect("/");
+  console.log(myBlog);
+//   // Saving the Post
+//   await myBlog.save(function(err,data){
+//     if(!err && data){
+//       console.log("Data Saved");
+//     }
+//     else{
+//       console.log(err);
+//     }
+//   });
 
-  // console.log(data.title);
+//   res.redirect("/");
+
+//   // console.log(data.title);
  })
 
 
