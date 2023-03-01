@@ -4,7 +4,9 @@
 
 "use strict"
 
-const path = require('path')
+// Error Coming! During File Reading!
+
+
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -20,14 +22,16 @@ main().catch(err => console.log(err));
 var fileupload = require("express-fileupload");
 app.use(fileupload());
 
-
+// const fs = require('fs');
+const path = require('path');
+app.use(bodyParser.json())
 //////////////////////////////////////////////////////////////////////////////////////
 // Setting Up Multer for Storing Image
 var multer = require('multer');
 
 var storage = multer.diskStorage({
   destination : (req,file,cb) =>{
-    cb(null , 'uploads')
+    cb(null , 'uploads');
   },
   filename : (req,file,cb) =>{
     cb(null,file.fieldname + '-' + Date.now())
@@ -118,18 +122,22 @@ app.get("/",async function(req,res)
 
  app.post("/compose", upload.single('image') , async function(req,res)
  {
-  console.log(req.body);
-  // posts.push(post);
-  myBlog = new blogModel({
-    blogTitle : req.body.postTitle,
-    blogBody : req.body.postBody,
-    img: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
-  }
-  })
+    try{
+            console.log(req.body);
+        // posts.push(post);
+        myBlog = new blogModel({
+          blogTitle : req.body.postTitle,
+          blogBody : req.body.postBody,
+          img: {
+            data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+            contentType: 'image/png'
+        }
+        })
 
-  console.log(myBlog);
+        console.log(myBlog);
+    }catch(e){
+      console.log(e);
+    }
 //   // Saving the Post
 //   await myBlog.save(function(err,data){
 //     if(!err && data){
