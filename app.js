@@ -38,7 +38,9 @@ var storage = multer.diskStorage({
   }
 });
 var upload = multer({ storage: storage })
+console.log(upload);
 const fs = require('fs');
+console.log(fs);
 
 // var fileupload = require("express-fileupload");
 // app.use(fileupload());
@@ -48,6 +50,8 @@ require('dotenv/config')
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/db_blog");
+  useUnifiedTopology: true;
+  useNewUrlParser: true,
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
     console.log("Database Active");
 }
@@ -123,7 +127,7 @@ app.get("/",async function(req,res)
  app.post("/compose", upload.single('image') , async function(req,res)
  {
     try{
-            console.log(req.body);
+        console.log(req.body);
         // posts.push(post);
         myBlog = new blogModel({
           blogTitle : req.body.postTitle,
@@ -154,6 +158,11 @@ app.get("/",async function(req,res)
  })
 
 
+
+// Testing a file
+app.get('/testCompose',function(req,res){
+  res.render('testCompose');
+})
 
 
 
