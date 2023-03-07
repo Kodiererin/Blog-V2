@@ -37,10 +37,9 @@ var storage = multer.diskStorage({
     cb(null,file.fieldname + '-' + Date.now())
   }
 });
-var upload = multer({ storage: storage })
-console.log(upload);
+var upload = multer({ storage: storage }).single('image');
+// upload.single('image')
 const fs = require('fs');
-console.log(fs);
 
 // var fileupload = require("express-fileupload");
 // app.use(fileupload());
@@ -124,8 +123,9 @@ app.get("/",async function(req,res)
 
  })
 
- app.post("/compose", upload.single('image') , async function(req,res)
+ app.post("/compose" , function(req,res)
  {
+  console.log(req.file);
     try{
         console.log(req.body);
         // posts.push(post);
