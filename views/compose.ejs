@@ -17,10 +17,12 @@
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"  cols="30" name="postBody"></textarea>
     </div>
     <div class="form-group">
-        <label for="image">Upload Image</label>
-        <input type="file" id="image" name="image" required>
+        <label for="exampleFormControlTextarea1">Upload Image</label>
+        <input class="form-control" type="file" id="image" name="blogImg"enctype="multipart/form-data">
     </div>
       <button type="button submit" class="btn btn-primary">Publish</button>
 </form>
 
 <%- include partials/footer %>
+
+<!-- Added ->  enctype="multipart/form-data" -->

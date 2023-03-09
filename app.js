@@ -27,17 +27,17 @@ const path = require('path');
 app.use(bodyParser.json())
 //////////////////////////////////////////////////////////////////////////////////////
 // Setting Up Multer for Storing Image
-var multer = require('multer');
 
+var multer = require('multer');
 var storage = multer.diskStorage({
   destination : (req,file,cb) =>{
-    cb(null , 'uploads');
+    cb(null , '/uploads');        // changed now uploads -> /uploads.
   },
   filename : (req,file,cb) =>{
     cb(null,file.fieldname + '-' + Date.now())
   }
 });
-var upload = multer({ storage: storage }).single('image');
+var upload = multer({ storage: storage });
 // upload.single('image')
 const fs = require('fs');
 
@@ -123,11 +123,11 @@ app.get("/",async function(req,res)
 
  })
 
- app.post("/compose" , function(req,res)
+ app.post("/compose" , upload.single('blogImg') , function(req,res)
  {
+  console.log(req.body);
   console.log(req.file);
     try{
-        console.log(req.body);
         // posts.push(post);
         myBlog = new blogModel({
           blogTitle : req.body.postTitle,
