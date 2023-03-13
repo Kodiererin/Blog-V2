@@ -1,6 +1,6 @@
 // https://www.geeksforgeeks.org/javascript-function-complete-reference/?ref=shm
 // Refer this Website and do the changes
-
+// Error in the database setup
 
 "use strict"
 
