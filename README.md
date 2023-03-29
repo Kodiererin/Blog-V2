@@ -62,7 +62,7 @@ To deploy this project run
 
 Contributions are always welcome!
 
-See `Contribution.md` for ways to get started.
+See `Contribution.md` Contribution.md for ways to get started.
 
 Please adhere to this project's `code of conduct`.
 
