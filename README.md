@@ -43,13 +43,6 @@ Start the server
   node app.js
 ```
 
-## Deployment
-
-To deploy this project run
-
-```bash
-  node app.js
-```
 
 ## Features
 
